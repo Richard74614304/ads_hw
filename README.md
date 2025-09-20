@@ -6,3 +6,5 @@
 ```
 ### 目录
 #### HW1 : Root of AVL Tree
+!!!
+    作业一 avltree 相关操作参考了陈昊老师的C语言实现示例

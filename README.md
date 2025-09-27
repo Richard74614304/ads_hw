@@ -8,3 +8,7 @@
 #### HW1 : Root of AVL Tree
 !!!
     作业一 avltree 相关操作参考了陈昊老师的C语言实现示例
+#### HW2 ：Self-printable B+ Tree
+!!! 
+    作业二只实现了order为3的B+树的插入功能，扩展性较差
+    之后有机会会加入删除功能，或者加入order可变的拓展

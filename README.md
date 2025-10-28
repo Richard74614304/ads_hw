@@ -12,20 +12,11 @@
 !!! 
     作业二只实现了order为3的B+树的插入功能，扩展性较差
     之后有机会会加入删除功能，或者加入order可变的拓展
-#### HW3 : 
-#### project2
-使用不同的堆前需要修改ds.h文件的宏定义：
-`#define heaptype PairingHeap`
-上面是使用配对堆的示例
-
-编译和运行可以在源代码所在文件夹打开终端输入下面的指令：
-编译：
-
-使用配对堆：
-`gcc Dijkstra.c Graph.c PairingHeap.c ds.h -o main`
-
-使用斐波那契堆：
-`gcc Dijkstra.c Graph.c FibonacciHeap.c ds.h -o main`
-
-运行(Windows系统)：
-`.\main.exe`
+#### HW3 : Document Distance
+!!!
+    实现了以document distance为依据的文件相关性的计算
+    使用了科学代码助手 :)
+#### project2：best data structure for Dijkstra Algorithm
+!!!
+    实现了配对堆和斐波那契堆并且用于Dijkstra Algorithm来查找最短路径
+    使用了科学代码助手 :)

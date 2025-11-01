@@ -16,6 +16,9 @@
 !!!
     实现了以document distance为依据的文件相关性的计算
     使用了科学代码助手 :)
+#### HW6 : Werewolf
+!!!
+    完成了关于狼人杀小游戏的题目，使用了基于数组结构的backtrack算法，剪枝部分较为简单
 #### project2：best data structure for Dijkstra Algorithm
 !!!
     实现了配对堆和斐波那契堆并且用于Dijkstra Algorithm来查找最短路径

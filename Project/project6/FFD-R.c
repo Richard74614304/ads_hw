@@ -41,28 +41,26 @@ void FFD_R_sort(Items items, int n) {
     return;
 }
 
-// 新增：合并可用区域的函数
+// merge adjacent free regions
 void merge_free_regions(FreeRegion* free_regions, int* free_count) {
     int merged = 1;
-    while (merged) { // 循环合并，直到没有可合并的
+    while (merged) {
         merged = 0;
         for (int i = 0; i < *free_count; i++) {
             for (int j = i + 1; j < *free_count; j++) {
                 FreeRegion* a = &free_regions[i];
                 FreeRegion* b = &free_regions[j];
 
-                // 条件1：水平合并（左右拼）
+                // condition 1: horizontal merge (side by side)
                 if (a->y == b->y && a->height == b->height && (a->x + a->width) == b->x) {
-                    // 合并成新区域：x=a.x, y=a.y, 宽=a.w+b.w, 高=a.h
                     a->width += b->width;
-                    // 移除j位置的区域（用最后一个覆盖，数量减1）
                     free_regions[j] = free_regions[*free_count - 1];
                     (*free_count)--;
                     merged = 1;
-                    break; // 合并后重新遍历
+                    break; // restart after merging
                 }
 
-                // 条件2：垂直合并（上下拼，可选）
+                // condition 2: vertical merge (top-down, optional)
                 if (a->x == b->x && a->width == b->width && (a->y + a->height) == b->y) {
                     a->height += b->height;
                     free_regions[j] = free_regions[*free_count - 1];
@@ -78,84 +76,84 @@ void merge_free_regions(FreeRegion* free_regions, int* free_count) {
 
 int FFD_R(int W, int n, Items items) {
     FFD_R_sort(items, n);
-    int bin_height = 0; // 容器当前高度
-    FreeRegion* free_regions = NULL; // 可用区域数组
-    int free_count = 0; // 可用区域数量
-    int free_capacity = 10; // 可用区域数组初始容量
+    int bin_height = 0; // current height of the container
+    FreeRegion* free_regions = NULL; // array of free regions
+    int free_count = 0; // number of free regions
+    int free_capacity = 10; // initial capacity of the free regions array
 
-    // 分配初始可用区域数组内存
+    // allocate initial memory for free regions
     free_regions = (FreeRegion*)malloc(free_capacity * sizeof(FreeRegion));
     if (free_regions == NULL) {
         perror("Failed to allocate free regions");
         exit(EXIT_FAILURE);
     }
 
-    // 初始可用区域：整个容器（宽度W，高度初始化为极大值，后续动态调整）
+    // initialize with one big free region
     free_regions[0] = (FreeRegion){0, 0, W, INT_MAX};
     free_count = 1;
 
-    // Step 3: 遍历每个物品，尝试放置（首次适配+旋转）
+    // traverse each item and try to place it
     for (int i = 0; i < n; i++) {
-        Itemptr item = &items[i]; // 当前待放置物品
-        int placed = 0; // 标记是否已放置
-        int best_region_idx = -1; // 最佳可用区域索引
-        int best_w = 0, best_h = 0; // 最佳放置尺寸（原始/旋转）
-        int best_rotated = 0; // 最佳旋转状态
+        Itemptr item = &items[i]; // current item to place
+        int placed = 0; // if the item has been placed
+        int best_region_idx = -1; // index of the best free region
+        int best_w = 0, best_h = 0; // index of best placement dimensions
+        int best_rotated = 0; // best rotated state
 
-        // 候选状态1：原始尺寸（未旋转）
+        // candidate 1: unrotated
         int candidate_w1 = item->w;
         int candidate_h1 = item->h;
-        // 候选状态2：旋转90度（仅当旋转后宽度≤W时允许）
+        // candidate 2: rotated 90 degrees (only if rotated width ≤ W)
         int candidate_w2 = item->h;
         int candidate_h2 = item->w;
-        int can_rotate = (candidate_w2 <= W); // 检查旋转后是否符合宽度约束
+        int can_rotate = (candidate_w2 <= W); // check if rotated dimensions fit within container width
 
-        // 遍历所有可用区域，寻找首次适配的区域
+        // traverse all available regions to find the first-fit region
         for (int r = 0; r < free_count; r++) {
             FreeRegion* region = &free_regions[r];
 
-            // 尝试状态1：未旋转
+            // try candidate 1: unrotated
             if (candidate_w1 <= region->width && candidate_h1 <= region->height) {
                 best_region_idx = r;
                 best_w = candidate_w1;
                 best_h = candidate_h1;
                 best_rotated = 0;
                 placed = 1;
-                break; // 首次适配，立即跳出
+                break; // first-fit, immediately break
             }
 
-            // 尝试状态2：旋转（如果允许）
+            // try candidate 2: rotated
             if (can_rotate && candidate_w2 <= region->width && candidate_h2 <= region->height) {
                 best_region_idx = r;
                 best_w = candidate_w2;
                 best_h = candidate_h2;
                 best_rotated = 1;
                 placed = 1;
-                break; // 首次适配，立即跳出
+                break; // first-fit, immediately break
             }
         }
 
-        // Step 4: 放置物品并更新可用区域
+        // place te item and update free regions
         if (placed) {
-            // 获取最佳可用区域
+            // get the best region
             FreeRegion* best_region = &free_regions[best_region_idx];
 
-            // 更新物品的放置信息
+            // uptate item placement info
             item->x = best_region->x;
             item->y = best_region->y;
             item->rotated = best_rotated;
 
-            // 更新容器高度（取当前物品底部的最大值）
+            // update bin height
             int item_bottom = item->y + best_h;
             if (item_bottom > bin_height) {
                 bin_height = item_bottom;
             }
 
-            // 分割可用区域：将当前区域替换为右侧和上方的剩余区域
+            // cut the free region into new regions
             FreeRegion new_regions[2];
             int new_count = 0;
 
-            // 右侧剩余区域（如果有）
+            // add free region on the right (if any)
             if (best_w < best_region->width) {
                 new_regions[new_count++] = (FreeRegion){
                     best_region->x + best_w,
@@ -165,7 +163,7 @@ int FFD_R(int W, int n, Items items) {
                 };
             }
 
-            // 上方剩余区域（如果有）
+            // add free region on the top (if any)
             if (best_h < best_region->height) {
                 new_regions[new_count++] = (FreeRegion){
                     best_region->x,
@@ -175,11 +173,11 @@ int FFD_R(int W, int n, Items items) {
                 };
             }
 
-            // 替换原可用区域为新区域：移除原区域，添加新区域
-            free_regions[best_region_idx] = free_regions[free_count - 1]; // 用最后一个区域覆盖当前区域
-            free_count--; // 减少区域数量
+            // remove the used free region and add new regions
+            free_regions[best_region_idx] = free_regions[free_count - 1]; // cover cuurent region with the last one
+            free_count--;
 
-            // 添加新区域，动态扩展数组容量
+            // allocate space for new regions if needed
             for (int nr = 0; nr < new_count; nr++) {
                 if (free_count >= free_capacity) {
                     free_capacity *= 2;
@@ -192,12 +190,13 @@ int FFD_R(int W, int n, Items items) {
                 free_regions[free_count++] = new_regions[nr];
             }
 
+            // merge adjacent free regions
             merge_free_regions(free_regions, &free_count);
         }
         else {
-            // Step 5: 没有可用区域，在容器顶部新增区域
+            // if no fitting region found, place the item at the top of the container
             int final_w, final_h, final_rotated;
-            // 选择原始或旋转后能放入容器宽度的尺寸
+            // decide rotation based on width
             if (item->w <= W) {
                 final_w = item->w;
                 final_h = item->h;
@@ -209,15 +208,15 @@ int FFD_R(int W, int n, Items items) {
                 final_rotated = 1;
             }
 
-            // 放置在容器顶部
+            // place the item on top
             item->x = 0;
             item->y = bin_height;
             item->rotated = final_rotated;
 
-            // 更新容器高度
+            // update the bin height
             bin_height += final_h;
 
-            // 添加右侧剩余区域（如果有）
+            // add free region on the right (if any)
             if (final_w < W) {
                 if (free_count >= free_capacity) {
                     free_capacity *= 2;
@@ -239,9 +238,9 @@ int FFD_R(int W, int n, Items items) {
         }
     }
 
-    // 释放可用区域数组内存
+    // free allocated memory
     free(free_regions);
 
-    // 返回容器最小高度
+    // return minimum height
     return bin_height;
 }

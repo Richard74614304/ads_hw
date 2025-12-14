@@ -6,31 +6,31 @@ struct Item {
     int h;
     int x;
     int y;
-    int rotated; // 0: 未旋转, 1: 旋转90度
+    int rotated; // 0: unrotated, 1: rotated 90 degrees
 };
 typedef struct Item* Itemptr;
 typedef struct Item* Items;
 
-// 可用区域结构体：记录容器中未被占用的矩形区域
+// Free region structure: available space in the container
 typedef struct FreeRegion {
-    int x;      // 区域左上角x坐标
-    int y;      // 区域左上角y坐标
-    int width;  // 区域宽度
-    int height; // 区域高度
+    int x;      // x coordinate of the region
+    int y;      // y coordinate of the region
+    int width;  // width of the region
+    int height; // height of the region
 } FreeRegion;
 
-// 天际线节点结构体
+// Skyline node structure
 typedef struct SkylineNode {
-    int x;          // 横坐标
-    int y;          // 该位置的高度
+    int x;          // x coordinate
+    int y;          // height at this position
     struct SkylineNode* next;
 } SkylineNode;
 
-// 放置位置的代价结构体
+// Placement structure for skyline algorithm
 typedef struct {
-    int x;          // 放置的x坐标
-    int y_base;     // 放置的基准高度
-    int cost;       // 代价（越小越好）
+    int x;          // x coordinate
+    int y_base;     // base height of the placement
+    int cost;       // cost (lower is better)
 } Placement;
 
 int FFD_R(int W, int n, Items items);

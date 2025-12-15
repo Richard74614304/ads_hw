@@ -23,8 +23,8 @@ int main(int argc, char** argv) {
     gettimeofday(&start, NULL);
 
     // call the approximation algorithm
-    // result = FFD_R(W, n, items);
-    result = skyline_pack(W, n, items);
+    result = FFD_R(W, n, items);
+    // result = skyline_pack(W, n, items);
     
     // Timing end
     gettimeofday(&end, NULL);
@@ -35,14 +35,15 @@ int main(int argc, char** argv) {
     printf("Minimum height on running %s: %d\n", argv[1], result);
     printf("Time: %.6f seconds\n", time);
 
+    // open the result file
     FILE *fp2 = fopen(argv[2], "w");
-    if (fp2 == NULL) { // 检查文件是否成功打开
+    if (fp2 == NULL) {
         perror("Failed to open result file");
-        free(items); // 打开失败也要释放内存
+        free(items);
         return 1;
     }
 
-    // 2. 将结果写入文件（替换原printf为fprintf，第一个参数为文件指针fp）
+    // write the result to the output file
     fprintf(fp2, "===== Skyline Algorithm Result =====\n");
     fprintf(fp2, "Container Width: %d\n", W);
     fprintf(fp2, "Minimum Height: %d\n", result);

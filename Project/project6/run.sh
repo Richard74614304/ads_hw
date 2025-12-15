@@ -6,18 +6,18 @@
 
 # ===================== 配置项（用户可根据需求修改）=====================
 # 1. 测试文件相关配置
-TEST_DIR="./dataset/UI"          # 测试文件所在目录（对应3D场景可改为./dataset/3D）
-TEST_FILE_PREFIX="UI_textures"   # 测试文件前缀（对应3D场景可改为3D_textures）
+TEST_DIR="./dataset/scale"          # 测试文件所在目录（对应3D场景可改为./dataset/3D）
+TEST_FILE_PREFIX="scale"   # 测试文件前缀（对应3D场景可改为3D_textures）
 TEST_FILE_EXT="txt"              # 测试文件后缀
-TEST_FILE_COUNT=10                # 测试文件数量（如5个：UI_textures1~5.txt）
+TEST_FILE_COUNT=12                # 测试文件数量（如5个：scale1~5.txt）
 
 # 新增：结果文件存储目录（用户可自行修改，比如./results/3D）
-RESULT_DIR="./result/Skyline/UI"
+RESULT_DIR="./result/FFD-R/scale"
 
 # 2. 编译相关配置
-FFD_SRC="Skyline.c"                # FFD-R算法源文件
+FFD_SRC="FFD-R.c"                # FFD-R算法源文件
 TEST_SRC="test.c"                # 测试主文件
-EXE_NAME="skyline_test"            # 编译后的可执行文件名
+EXE_NAME="ffd_r_test"            # 编译后的可执行文件名
 COMPILE_FLAGS="-Wall -O2"        # 编译选项
 
 # ===================== 颜色与日志配置 =====================

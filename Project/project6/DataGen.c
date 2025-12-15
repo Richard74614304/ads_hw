@@ -18,7 +18,7 @@
 #elif defined(GENERATE_EFFECT_TEXTURE)
     #define TEXTURE_COUNT 30       // 特效纹理数量
 #elif defined(GENERATE_MIX_TEXTURE)
-    #define TEXTURE_COUNT 200      // 混合纹理数量
+    #define TEXTURE_COUNT 3000      // 混合纹理数量
 #endif
 
 // 纹理打包常用的2的幂次尺寸数组（PoT，GPU采样效率高）
@@ -209,9 +209,9 @@ int main() {
     #endif
 
     // 打开文件（w模式：覆盖原有内容，不存在则创建）
-    FILE *fp = fopen("./dataset/mix/mix_textures.txt", "w");
+    FILE *fp = fopen("./dataset/scale/scale12.txt", "w");
     if (!fp) {
-        perror("Failed to open ./dataset/mix/mix_textures.txt");
+        perror("Failed to open ./dataset/scale/scale4.txt");
         free(textures);
         return EXIT_FAILURE;
     }

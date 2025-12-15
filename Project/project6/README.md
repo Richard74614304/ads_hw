@@ -130,6 +130,10 @@ Test cases are located in the `dataset` directory, mainly designed to cover scen
     - 背景: 实际项目中，纹理图集常混合 UI、3D 模型、特效纹理，尺寸从 8×8 到 2048×2048 不等，比例杂乱。
     - 测试目的: 验证算法在真实复杂场景下的综合表现，是否满足项目的实际需求。
 
+- scale 测试集（不同数据规模）
+    - 背景: 在mix数据集基础上，为了评估算法的时间复杂度和性能，设计了一系列不同数据规模的测试文件，从 1 个纹理到 3000 个纹理不等。
+    - 测试目的: 验证算法在不同数据规模下的运行时间，确保其多项式时间复杂度。
+
 ## compilation & execution
 run `run.sh` to compile and execute the program on all test files.
 (In Linux/macOS, ensure the script has execute permission: `chmod +x run.sh`)
@@ -231,6 +235,38 @@ Testing results are stored in the `result` directory, organized by algorithm and
 |          | UI_textures8.txt       | 0.007774           |                          |
 |          | UI_textures9.txt       | 0.006057           |                          |
 |          | UI_textures10.txt      | 0.005324           |                          |
+
+### Skyline算法不同数据规模运行时间测试报告
+| 数据规模标识 | 测试文件       | 运行时间（秒） |
+|--------------|----------------|----------------|
+| 1       | scale1.txt     | 0.000002       |
+| 5       | scale2.txt     | 0.000004       |
+| 10       | scale3.txt     | 0.000008       |
+| 20       | scale4.txt     | 0.000013       |
+| 50       | scale5.txt     | 0.000026       |
+| 100      | scale6.txt     | 0.000051       |
+| 200      | scale7.txt     | 0.000121       |
+| 300      | scale8.txt     | 0.000259       |
+| 500       | scale9.txt     | 0.000529       |
+| 1000      | scale10.txt    | 0.006844       |
+| 1500      | scale11.txt    | 0.023390       |
+| 3000      | scale12.txt    | 0.163335       |
+
+### FFD-R算法不同数据规模运行时间测试报告
+| 数据规模标识 | 测试文件       | 运行时间（秒） |
+|--------------|----------------|----------------|
+| 1       | scale1.txt     | 0.000001       |
+| 5       | scale2.txt     | 0.000002       |
+| 10       | scale3.txt     | 0.000003       |
+| 20       | scale4.txt     | 0.000011       |
+| 50       | scale5.txt     | 0.000027       |
+| 100      | scale6.txt     | 0.000142       |
+| 200      | scale7.txt     | 0.000534       |
+| 300      | scale8.txt     | 0.001088       |
+| 500      | scale9.txt     | 0.004821       |
+| 1000     | scale10.txt    | 0.013206       |
+| 1500     | scale11.txt    | 0.057485       |
+| 3000     | scale12.txt    | 0.153501       |
 
 ## Directory Structure
 - `test.c`: Test program.

@@ -1,0 +1,5 @@
+===== Skyline Algorithm Result =====
+Container Width: 2048
+Minimum Height: 16
+Item Placement:
+Item 1: (original w=16, h=16) → placed at (x=0, y=0), rotated=No

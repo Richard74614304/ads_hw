@@ -10,8 +10,8 @@ SRC_FILE="DataGen.c"   # 源文件名称
 EXE_FILE="gen.exe"     # 编译后的可执行文件名称
 BACKUP_FILE="${SRC_FILE}.bak" # 源文件备份名（保留原始内容）
 # 新增：原文件的基础路径和文件名（关键配置）
-BASE_DIR="./dataset/mix"          # 基础目录
-BASE_FILENAME="mix_textures"      # 基础文件名（无后缀）
+BASE_DIR="./dataset/scale"          # 基础目录
+BASE_FILENAME="scale"      # 基础文件名（无后缀）
 BASE_EXT="txt"                   # 文件后缀
 
 # ===================== 颜色与日志配置 =====================
